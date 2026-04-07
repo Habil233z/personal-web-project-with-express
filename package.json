@@ -6,13 +6,21 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "nodemon index.js"
   },
-  "type": "module",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Habil233z/personal-web-project-with-express.git"
+  },
   "keywords": [],
   "author": "",
   "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Habil233z/personal-web-project-with-express/issues"
+  },
+  "homepage": "https://github.com/Habil233z/personal-web-project-with-express#readme",
   "description": "",
   "dependencies": {
-    "expres": "^0.0.5",
-    "express-handlebars": "^8.0.3"
+    "express": "^5.2.1",
+    "hbs": "^4.2.1",
+    "nodemon": "^3.1.14"
   }
 }
