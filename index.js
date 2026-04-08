@@ -8,6 +8,8 @@ const port = 3000
 app.use(express.json())
 app.use(express.urlencoded({extended: true}))
 
+app.use("/assets", express.static("./src/assets/scripts"))
+
 app.engine("hbs", engine({
     extname: ".hbs",
     defaultLayout: "main",
@@ -15,10 +17,10 @@ app.engine("hbs", engine({
     partialsDir: "./src/views/partials"
 }))
 
+
+
 let base64String = "";
-const hbs = create({
-    helpers: {
-            imageUploaded() {
+            function imageUploaded() {
                 console.log("testing")
             let file = document.querySelector(
                 'input[type=file]')['files'][0];
@@ -34,9 +36,6 @@ const hbs = create({
             }
             reader.readAsDataURL(file);
         }
-    }
-});
-
 //dummy data
 //const projects = [
 //    { name: "Test 1", description: "1234567890", tag: "Tecnology"},

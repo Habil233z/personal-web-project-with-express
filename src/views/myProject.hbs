@@ -18,7 +18,7 @@
                         </select>
                     <div class="imgUpload">
                     <h2 id="imgUpload">images</h2>
-                    <input type="file" name="img" id="fileId" onchange={{imageUploaded}}>
+                    <input type="file" name="img" id="fileId" onchange="imgUploaded()">
                     </div>
                     <button type="submit" id="submitButton">submit</button>
                 </form>
@@ -61,3 +61,6 @@
             {{/each}}
         </div> 
     </div>
+
+
+<script src="../assets/scripts/helper.js"></script>
