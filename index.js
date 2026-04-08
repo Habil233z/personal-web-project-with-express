@@ -1,5 +1,10 @@
 import express from "express"
 import { engine } from "express-handlebars"
+import multer from "multer"
+
+const storage = multer.memoryStorage()
+const upload = multer({ storage: storage})
+let dataUri = ""
 
 const app = express()
 const port = 3000
@@ -18,7 +23,6 @@ app.engine("hbs", engine({
 
 let base64String = "";
             function imageUploaded() {
-                console.log("testing")
             let file = document.querySelector(
                 'input[type=file]')['files'][0];
 
@@ -93,7 +97,7 @@ app.post("/my-project", async (req, res) => {
             name,
             description,
             tag,
-            img:"placeholder",
+            img:dataUri,
         }
         await new Promise(resolve => setTimeout(resolve, 500))
         projects.push(newProject)
@@ -152,7 +156,7 @@ app.post("/my-project/edit/:id", async (req, res) => {
             name,
             description,
             tag,
-            img:"placeholder"
+            img:dataUri
         }
         console.log("project updated")
         res.redirect(`/my-project/${projectsId}`)
@@ -164,6 +168,7 @@ app.post("/my-project/edit/:id", async (req, res) => {
 
 app.post("/my-project/delete/:id", async (req, res) => {
     try{
+
         const {id} = req.params
         const projectsId = parseInt(id)
         const project = projects.find(p => p.id === projectsId)
@@ -190,6 +195,18 @@ app.listen(port, () => {
   console.log(`Example app listening on port ${port}`)
 })
 
+app.post("/convert-image", upload.single("image"), (req, res) => {
+    try {
+        const buffer = req.file.buffer
+        const base64String = buffer.toString('base64')
+        dataUri = `data:${req.file.mimetype}; base64, ${base64String}`
+
+        res.status(200)
+    } catch (error) {
+        console.log("error at convert-image")
+    }
+
+})
 //test
 
 

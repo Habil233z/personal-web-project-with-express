@@ -20,11 +20,15 @@
                         </select>
                     <div class="imgUpload">
                     <h2 id="imgUpload">images</h2>
-                    <input type="file" name="img" id="fileId" onchange="imageUploaded()">
+                    
+                    
                     </div>
                     <button type="submit" id="submitButton">submit</button>
                 </form>
-
+                <form action="/convert-image" method="post" enctype="multipart/form-data">
+                        <input type="file" name="image">
+                        <button type="submit" onclick="return confirm('img has been uploaded')">Convert Image</button>
+                </form>
         </div>
 
         <div class="myProjectContainer">
@@ -35,7 +39,7 @@
 <div id="containerArea">
     {{#each projects}}
     <div class="card" id="card">
-        <img class="card-img-top" src="${project.img}" alt="Not Avalable">
+        <img class="card-img-top" src="{{{img}}}" alt="Not Avalable">
         <div class="card-body">
         <h5 class="card-title">{{name}}</h5>
             <div class="introContainer">
