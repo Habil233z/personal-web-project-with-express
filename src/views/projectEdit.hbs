@@ -1,0 +1,27 @@
+
+        <div class="formProjectContainer">
+            <h1 id="myProjecth1">Edit this project</h1>
+            <button>
+                <a href="/home">Back</a>
+            </button>
+                <form action="/my-project/edit/{{project.id}}" method="post">
+                    <h2>Project Name</h2>
+                        <input type="text" id="projectName" name="name" value="{{project.name}}">
+                    <h2>Description</h2>
+                        <input type="text" id="projectDescription" name="description" value="{{project.description}}">
+                    <h2>Tag</h2>
+                        <select id="projectTag" name="tag">
+                            <option value="{{project.tag}}">{{project.tag}}</option>
+                            <option value="none">None</option>
+                            <option value="technology">Technology</option>
+                            <option value="sport">Sport</option>
+                            <option value="construction">Construction</option>
+                            <option value="decoration">decoration</option>
+                        </select>
+                    <div class="imgUpload">
+                    <h2 id="imgUpload">images</h2>
+                    <input type="file" name="img" id="fileId" onchange="imageUploaded()">
+                    </div>
+                    <button type="submit" id="submitButton">submit</button>
+                </form>
+        </div>

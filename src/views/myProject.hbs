@@ -1,9 +1,11 @@
 
         <div class="formProjectContainer">
-            <button class="backButton" onclick="back()">Back</button>
-            <h1 id="myProjecth1">Add New Project</h1>
 
-                <form action="my-project" method="post">
+            <h1 id="myProjecth1">Add New Project</h1>
+                <button>
+                    <a href="/home">Back</a>
+                </button>
+                <form action="/my-project" method="post">
                     <h2>Project Name</h2>
                         <input type="text" id="projectName" name="name">
                     <h2>Description</h2>
@@ -18,25 +20,19 @@
                         </select>
                     <div class="imgUpload">
                     <h2 id="imgUpload">images</h2>
-                    <input type="file" name="img" id="fileId" onchange="imgUploaded()">
+                    <input type="file" name="img" id="fileId" onchange="imageUploaded()">
                     </div>
                     <button type="submit" id="submitButton">submit</button>
                 </form>
-                <button onclick="clearAll()" id="clearAllButton">clear all</button>
+
         </div>
 
         <div class="myProjectContainer">
             <div class="filterArea">
-                <h2>Filter by Tag</h2>
-                    <select id="filterTag" onchange="filterProjects()">
-                        <option value="none">None</option>
-                        <option value="technology">Technology</option>
-                        <option value="sport">Sport</option>
-                        <option value="construction">Construction</option>
-                        <option value="decoration">decoration</option>
-                    </select>
+                <h2>Stored Projects</h2>
+                    
             </div>
-            <div id="containerArea">
+<div id="containerArea">
     {{#each projects}}
     <div class="card" id="card">
         <img class="card-img-top" src="${project.img}" alt="Not Avalable">
@@ -45,22 +41,22 @@
             <div class="introContainer">
             <p class="card-text">{{description}}</p>
                 </div>
-                    <button>Delete</button>
-                    <button>Detail</button>
+                    <button>
+                        <a href="/my-project/{{{id}}}">Detail</a>
+                    </button>
+                    <button>
+                        <a href="/my-project/edit/{{{id}}}">Edit</a>
+                    </button>
+                    
+                    <form action="my-project/delete/{{{id}}}" method="post">
+                        <button type="submit" onclick="return confirm('Are you sure you want to delete this project?')">
+                            Delete
+                        </button>
+                    </form>
                     <h6>tag:{{tag}}</h6>
-                    <div class="detail" id="detail${index}">
-                        <div class="detailContainer">
-                        <img class="imgDetail" src="${project.img}" alt="${project.img}">
-                        <h2>{{name}}</h2>
-                        <p>{{description}}</p>
-                        <button onclick="closeDetail(${index})">Close</button>
-                    </div>
                 </div>
             </div>
-            </div>
             {{/each}}
+            </div>
         </div> 
     </div>
-
-
-<script src="../assets/scripts/helper.js"></script>
