@@ -21,22 +21,6 @@ app.engine("hbs", engine({
     partialsDir: "./src/views/partials"
 }))
 
-let base64String = "";
-            function imageUploaded() {
-            let file = document.querySelector(
-                'input[type=file]')['files'][0];
-
-            let reader = new FileReader();
-
-            reader.onload = function () {
-                base64String = reader.result
-
-                imageBase64Stringsep = base64String;
-
-                console.log(base64String);
-            }
-            reader.readAsDataURL(file);
-        }
 //dummy data
 //const projects = [
 //    { name: "Test 1", description: "1234567890", tag: "Tecnology"},
