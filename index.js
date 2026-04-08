@@ -17,23 +17,33 @@ app.set("views", "./src/views")
 app.use("/assets", express.static("./src/assets"))
 
 app.get("/", (req, res) => {
-    res.render("home")
+    res.render("home", {
+        title: "Home"
+    })
 })
 
 app.get('/home', (req, res) => {
-  res.render("home")
+    res.render("home", {
+        title: "Home"
+  })
 })
 
 app.get("/contact", (req, res) => {
-    res.render("contact")
+    res.render("contact", {
+        title: "Contact"
+    })
 })
 
 app.get("/my-project", (req, res) => {
-    res.render("myProject")
+    res.render("myProject", {
+        title: "My Project"
+    })
 })
 
 app.get("/contact-me", (req, res) => {
-    res.render("contactMe")
+    res.render("contactMe", {
+        title: "Contact Me"
+    })
 })
 
 app.listen(port, () => {
