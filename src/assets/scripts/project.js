@@ -39,6 +39,36 @@ export async function createProject(req, res, db, dataUri) {
         const {name, description, tag} = req.body
         const img = dataUri
 
+        if (name.length === 0) {
+        req.session.flash = {
+            type: "danger",
+            message: "Project must have a name"
+        }
+        res.redirect("/my-project")
+        }
+        if (description.length === 0) {
+        req.session.flash = {
+            type: "danger",
+            message: "Project must have a description"
+        }
+        res.redirect("/my-project")
+        }
+        if (tag === "none") {
+        req.session.flash = {
+            type: "danger",
+            message: "Project must have a tag"
+        }
+        res.redirect("/my-project")
+        }
+        if (img.length === 0) {
+        req.session.flash = {
+            type: "danger",
+            message: "Project must have a image"
+        }
+        res.redirect("/my-project")
+        } 
+        
+        else {
         const query = "INSERT INTO projects (name, description, tag, img) VALUES ($1, $2, $3, $4) RETURNING*"
         const values = [name, description, tag, img]
         const result = await db.query(query, values)
@@ -50,6 +80,7 @@ export async function createProject(req, res, db, dataUri) {
 
         console.log(result.rows[0])
         res.redirect("/my-project")
+        }
 
     } catch (error) {
         req.session.flash = {
@@ -65,6 +96,8 @@ export async function createProject(req, res, db, dataUri) {
 export async function getEditProject(req, res, db) {
     try {
     const { id } = req.params
+    const flash = req.session.flash
+    delete req.session.flash
 
     const query = "SELECT * FROM projects WHERE id = $1"
     const result = await db.query(query, [id])
@@ -74,7 +107,8 @@ export async function getEditProject(req, res, db) {
     }
     res.render("projectEdit", {
         title: "Project Detail", 
-        project: result.rows[0]})
+        project: result.rows[0],
+        flash})
     } catch (error) {
         console.log("Error fetching Project", error)
         res.send("Server Error")
@@ -86,26 +120,51 @@ export async function updateProject(req, res, db, dataUri) {
     const { id } = req.params
     const {name, description, tag,} = req.body
     const img = dataUri
-    const query = `
+
+    if (name.length === 0) {
+        req.session.flash = {
+            type: "danger",
+            message: "Project must have a name"
+        }
+        res.redirect(`/my-project/edit/${id}`)
+        }
+        if (description.length === 0) {
+        req.session.flash = {
+            type: "danger",
+            message: "Project must have a description"
+        }
+        res.redirect(`/my-project/edit/${id}`)
+        }
+        if (tag === "none") {
+        req.session.flash = {
+            type: "danger",
+            message: "Project must have a tag"
+        }
+        res.redirect(`/my-project/edit/${id}`)
+        } else {
+        const query = `
         UPDATE projects
         SET name = $1, description = $2, tag = $3, img = $4
         WHERE id = $5
         RETURNING *
         `
-    const values = [name, description, tag, img, id]
-    const result = await db.query(query, values)
+        const values = [name, description, tag, img, id]
+        const result = await db.query(query, values)
 
-    if (result.rows.length === 0) {
+        if (result.rows.length === 0) {
         return res.send("Project not found")
-    }
+        }
 
-    req.session.flash = {
+        req.session.flash = {
             type: "success",
             message: "Project successfully edited"
         }
 
-    console.log("Project updated:", result.rows[0])
-    res.redirect("/my-project")
+        console.log("Project updated:", result.rows[0])
+        res.redirect("/my-project")
+        }
+
+
     } catch (error) {
         req.session.flash = {
             type: "danger",

@@ -1,17 +1,23 @@
 <div class="mainContainer">
-    <h2>{{project.name}}</h2>
-    <P>{{project.description}}</P>
-    <table>
-        <tr>
-            <td>id</td>
-            <td>:{{project.id}}</td>
-        </tr>
-        <tr>
-            <td>tag</td>
-            <td>:{{project.tag}}</td>
-        </tr>
-    </table>
-    <button>
-        <a href="/my-project">Back</a>
-    </button>
+    <div class="detailContainer">
+        <div class="detail">
+            <h2 class="h2Detail">{{project.name}}</h2>
+            <img class="imgDetail" src="{{{project.img}}}" alt="Not Avalable">
+            <P>{{project.description}}</P>
+            <div class="detailLine"></div>
+            <table>
+                <tr>
+                    <td>id</td>
+                   <td>:{{project.id}}</td>
+               </tr>
+                <tr>
+                    <td>tag</td>
+                    <td>:{{project.tag}}</td>
+                </tr>
+            </table>
+            <button>
+                <a href="/my-project">Back</a>
+            </button>
+        </div>
+    </div>
 </div>

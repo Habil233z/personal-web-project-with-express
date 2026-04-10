@@ -9,6 +9,14 @@
                 <button>
                     <a href="/home">Back</a>
                 </button>
+                <div class="imgUpload">
+                    <h2 id="imgUpload">images</h2>
+                    </div>
+                <form action="/convert-image" method="post" enctype="multipart/form-data">
+                        <img src="{{{dataUri}}}" alt="Img Hasn't been added" class="previewImage">
+                        <input type="file" name="image">
+                        <button type="submit" onclick="return confirm('img has been uploaded')">Convert Image</button>
+                </form>
                 <form action="/my-project" method="post" class="addProjectForm">
                     <h2>Project Name</h2>
                         <input type="text" id="projectName" name="name">
@@ -22,16 +30,10 @@
                             <option value="construction">Construction</option>
                             <option value="decoration">decoration</option>
                         </select>
-                    <div class="imgUpload">
-                    <h2 id="imgUpload">images</h2>
-                    </div>
+                    
                     <button type="submit" id="submitButton">submit</button>
                 </form>
-                <form action="/convert-image" method="post" enctype="multipart/form-data">
-                        <img src="{{{dataUri}}}" alt="Img Hasn't been added" class="previewImage">
-                        <input type="file" name="image">
-                        <button type="submit" onclick="return confirm('img has been uploaded')">Convert Image</button>
-                </form>
+                
 
         </div>
 

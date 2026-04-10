@@ -1,4 +1,8 @@
-
+{{#if flash}}
+<div class="alert alert-{{flash.type}}">
+    {{flash.message}}
+</div>
+{{/if}}
         <div class="formProjectContainer">
             <h1 id="myProjecth1">Edit this project</h1>
             <button>
