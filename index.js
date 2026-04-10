@@ -73,7 +73,7 @@ app.get("/contact", (req, res) => {
 })
 
 app.get("/my-project", async (req, res) => getProjects(req, res, db))
-app.post("/my-project", async (req, res) => createProject(req, res, db))
+app.post("/my-project", async (req, res) => createProject(req, res, db, dataUri))
 app.get("/my-project/:id", async (req, res) => getProjectsById(req, res, db))
 app.get("/my-project/edit/:id", async (req, res) => getEditProject(req, res, db))
 app.post("/my-project/edit/:id", async (req, res) => updateProject(req, res, db))
@@ -203,13 +203,13 @@ app.post("/convert-image", upload.single("image"), (req, res) => {
         const buffer = req.file.buffer
         const base64String = buffer.toString('base64')
         dataUri = `data:${req.file.mimetype}; base64, ${base64String}`
-
+        
         res.status(200)
     } catch (error) {
         console.log("error at convert-image")
     }
 
-})
+ })
 //test
 
 

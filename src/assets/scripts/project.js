@@ -33,9 +33,10 @@ export async function getProjectsById(req, res, db) {
     }
 }
 
-export async function createProject(req, res, db) {
+export async function createProject(req, res, db, dataUri) {
     try {
-        const {name, description, tag, img} = req.body
+        const {name, description, tag} = req.body
+        const img = dataUri
 
         const query = "INSERT INTO projects (name, description, tag, img) VALUES ($1, $2, $3, $4) RETURNING*"
         const values = [name, description, tag, img]
@@ -82,8 +83,8 @@ export async function getEditProject(req, res, db) {
 export async function updateProject(req, res, db) {
     try {
     const { id } = req.params
-    const {name, description, tag, img} = req.body
-
+    const {name, description, tag,} = req.body
+    const img = image
     const query = `
         UPDATE projects
         SET name = $1, description = $2, tag = $3, img = $4
@@ -135,3 +136,4 @@ export async function deleteProject(req, res, db) {
         console.log("error")
     }
 }
+
