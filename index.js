@@ -33,9 +33,6 @@ app.engine("hbs", engine({
     partialsDir: "./src/views/partials"
 }))
 
-let projects = []
-let projectsId = 1
-
 app.set('view engine', 'hbs')
 app.set("views", "./src/views")
 
