@@ -1,6 +1,10 @@
 import express from "express"
 import { engine } from "express-handlebars"
 import multer from "multer"
+import { db } from "./config/database.js"
+import session from "express-session"
+
+import { getProjects, getProjectsById, createProject, getEditProject, updateProject, deleteProject } from "./src/assets/scripts/project.js"
 
 const storage = multer.memoryStorage()
 const upload = multer({ storage: storage})
@@ -13,6 +17,14 @@ app.use(express.json())
 app.use(express.urlencoded({extended: true}))
 
 app.use("/assets", express.static("./src/assets/scripts"))
+app.use("/assets", express.static("./src/assets"))
+app.use("/views", express.static("./src/views"))
+
+app.use(session({
+  secret: 'secretkey',
+  resave: false,
+  saveUninitialized: true
+}))
 
 app.engine("hbs", engine({
     extname: ".hbs",
@@ -40,7 +52,7 @@ let projectsId = 1
 app.set('view engine', 'hbs')
 app.set("views", "./src/views")
 
-app.use("/assets", express.static("./src/assets"))
+
 
 app.get("/", (req, res) => {
     res.render("home", {
@@ -60,114 +72,121 @@ app.get("/contact", (req, res) => {
     })
 })
 
-app.get("/my-project", async (req, res) => {
-    try {
-        res.render("myProject", {
-            projects: projects,
-            imgUpload: '<input type="file" name="img" id="fileId" onchange="imageUploaded()"></input>',
-            title: "My Project",
-        })
-    } catch (error) {
-        console.error("error");
-    }
-    })
+app.get("/my-project", async (req, res) => getProjects(req, res, db))
+app.post("/my-project", async (req, res) => createProject(req, res, db))
+app.get("/my-project/:id", async (req, res) => getProjectsById(req, res, db))
+app.get("/my-project/edit/:id", async (req, res) => getEditProject(req, res, db))
+app.post("/my-project/edit/:id", async (req, res) => updateProject(req, res, db))
+app.post("/my-project/delete/:id", async (req, res) => deleteProject(req, res, db))
 
-app.post("/my-project", async (req, res) => {
-    try{
-        const {name, description, tag, img} = req.body
+// app.get("/my-project", async (req, res) => {
+//     try {
+//         res.render("myProject", {
+//             projects: projects,
+//             imgUpload: '<input type="file" name="img" id="fileId" onchange="imageUploaded()"></input>',
+//             title: "My Project",
+//         })
+//     } catch (error) {
+//         console.error("error");
+//     }
+//     })
+
+// app.post("/my-project", async (req, res) => {
+//     try{
+//         const {name, description, tag, img} = req.body
        
-        const newProject = {
-            id:projectsId++,
-            name,
-            description,
-            tag,
-            img:dataUri,
-        }
-        await new Promise(resolve => setTimeout(resolve, 500))
-        projects.push(newProject)
-        console.log(newProject)
-        console.log()
-        res.redirect("/my-project")
-    } catch {
-        console.log("error")
-    }
+//         const newProject = {
+//             id:projectsId++,
+//             name,
+//             description,
+//             tag,
+//             img:dataUri,
+//         }
+//         await new Promise(resolve => setTimeout(resolve, 500))
+//         projects.push(newProject)
+//         console.log(newProject)
+//         console.log()
+//         res.redirect("/my-project")
+//     } catch {
+//         console.log("error")
+//     }
 
-})
+// })
 
-app.get("/my-project/:id", async (req, res) => {
-    try{
-        const {id} = req.params
-        const projectsId = parseInt(id)
-        const project = projects.find(p => p.id === projectsId)
+// app.get("/my-project/:id", async (req, res) => {
+//     try{
+//         const {id} = req.params
+//         const projectsId = parseInt(id)
+//         const project = projects.find(p => p.id === projectsId)
 
-        if(!project) {
-            return res.send("Project not found")
-        }
-        res.render("projectDetail", {project})
-    } catch (error){
-        console.log("error")
-    }
-})
+//         if(!project) {
+//             return res.send("Project not found")
+//         }
+//         res.render("projectDetail", {project})
+//     } catch (error){
+//         console.log("error")
+//     }
+// })
 
-app.get("/my-project/edit/:id", async (req, res) => {
-    try{
-        const {id} = req.params
-        const projectsId = parseInt(id)
-        const project = projects.find(p => p.id === projectsId)
+// app.get("/my-project/edit/:id", async (req, res) => {
+//     try{
+//         const {id} = req.params
+//         const projectsId = parseInt(id)
+//         const project = projects.find(p => p.id === projectsId)
 
-        if(!project) {
-            return res.send("Project not found")
-        }
-        res.render("projectEdit", {project})
-    } catch (error){
-        console.log("error")
-    }
-})
+//         if(!project) {
+//             return res.send("Project not found")
+//         }
+//         res.render("projectEdit", {project})
+//     } catch (error){
+//         console.log("error")
+//     }
+// })
 
-app.post("/my-project/edit/:id", async (req, res) => {
-    try{
-        const {id} = req.params
-        const projectsId = parseInt(id)
-        const {name, description, tag, img} = req.body
+// app.post("/my-project/edit/:id", async (req, res) => {
+//     try{
+//         const {id} = req.params
+//         const projectsId = parseInt(id)
+//         const {name, description, tag, img} = req.body
         
-        const index = projects.findIndex(p => p.id === projectsId)
-        console.log(index)
-        if(index === -1) {
-            return res.send("Project not found")
-        }
-        projects[index] = {
-            id: projectsId,
-            name,
-            description,
-            tag,
-            img:dataUri
-        }
-        console.log("project updated")
-        res.redirect(`/my-project/${projectsId}`)
+//         const index = projects.findIndex(p => p.id === projectsId)
+//         console.log(index)
+//         if(index === -1) {
+//             return res.send("Project not found")
+//         }
+//         projects[index] = {
+//             id: projectsId,
+//             name,
+//             description,
+//             tag,
+//             img:dataUri
+//         }
+//         console.log("project updated")
+//         res.redirect(`/my-project/${projectsId}`)
 
-    } catch (error){
-        console.log("error")
-    }
-})
+//     } catch (error){
+//         console.log("error")
+//     }
+// })
 
-app.post("/my-project/delete/:id", async (req, res) => {
-    try{
+// app.post("/my-project/delete/:id", async (req, res) => {
+//     try{
 
-        const {id} = req.params
-        const projectsId = parseInt(id)
-        const project = projects.find(p => p.id === projectsId)
+//         const {id} = req.params
+//         const projectsId = parseInt(id)
+//         const project = projects.find(p => p.id === projectsId)
 
-        if(!projects) {
-            return res.send("Project not found")
-        }
-        projects = projects.filter(p => p.id !== projectsId)
-        console.log(`project with id:${projectsId} has been deleted`)
+//         if(!projects) {
+//             return res.send("Project not found")
+//         }
+//         projects = projects.filter(p => p.id !== projectsId)
+//         console.log(`project with id:${projectsId} has been deleted`)
         
-        res.redirect("/my-project")
-    } catch (error){
-        console.log("error")
-    }
-})
+//         res.redirect("/my-project")
+//     } catch (error){
+//         console.log("error")
+//     }
+// })
 
 app.get("/contact-me", (req, res) => {
     res.render("contactMe", {
