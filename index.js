@@ -72,11 +72,11 @@ app.get("/contact", (req, res) => {
     })
 })
 
-app.get("/my-project", async (req, res) => getProjects(req, res, db))
+app.get("/my-project", async (req, res) => getProjects(req, res, db, dataUri))
 app.post("/my-project", async (req, res) => createProject(req, res, db, dataUri))
 app.get("/my-project/:id", async (req, res) => getProjectsById(req, res, db))
 app.get("/my-project/edit/:id", async (req, res) => getEditProject(req, res, db))
-app.post("/my-project/edit/:id", async (req, res) => updateProject(req, res, db))
+app.post("/my-project/edit/:id", async (req, res) => updateProject(req, res, db, dataUri))
 app.post("/my-project/delete/:id", async (req, res) => deleteProject(req, res, db))
 
 // app.get("/my-project", async (req, res) => {
@@ -203,13 +203,18 @@ app.post("/convert-image", upload.single("image"), (req, res) => {
         const buffer = req.file.buffer
         const base64String = buffer.toString('base64')
         dataUri = `data:${req.file.mimetype}; base64, ${base64String}`
-        
-        res.status(200)
+        req.session.flash = {
+            type: "success",
+            message: "Img has been Converted. Ready to submit"
+        }
+        res.redirect("/my-project")
+
     } catch (error) {
         console.log("error at convert-image")
     }
 
  })
+
 //test
 
 

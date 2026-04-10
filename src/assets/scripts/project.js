@@ -1,4 +1,4 @@
-export async function getProjects(req, res, db) {
+export async function getProjects(req, res, db, dataUri) {
     const query = "SELECT * FROM projects ORDER BY id ASC"
     const result = await db.query(query)
 
@@ -10,7 +10,8 @@ export async function getProjects(req, res, db) {
     res.render("myProject", {
         projects: result.rows, 
         title: "My Project",
-        flash
+        flash,
+        dataUri:dataUri
     })
 }
 
@@ -80,11 +81,11 @@ export async function getEditProject(req, res, db) {
     }
 }
 
-export async function updateProject(req, res, db) {
+export async function updateProject(req, res, db, dataUri) {
     try {
     const { id } = req.params
     const {name, description, tag,} = req.body
-    const img = image
+    const img = dataUri
     const query = `
         UPDATE projects
         SET name = $1, description = $2, tag = $3, img = $4
