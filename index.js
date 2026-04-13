@@ -42,12 +42,6 @@ app.use("/assets", express.static("./src/assets/scripts"))
 app.use("/assets", express.static("./src/assets"))
 app.use("/views", express.static("./src/views"))
 
-app.use(session({
-  secret: 'secretkey',
-  resave: false,
-  saveUninitialized: true
-}))
-
 app.engine("hbs", engine({
     extname: ".hbs",
     defaultLayout: "main",
@@ -58,19 +52,15 @@ app.engine("hbs", engine({
 app.set('view engine', 'hbs')
 app.set("views", "./src/views")
 
-
-
 app.get("/", (req, res) => {
     res.render("home", {
-        title: "Home",
-        user: req.session.user
+        title: "Home"
     })
 })
 
 app.get('/home', (req, res) => {
     res.render("home", {
-        title: "Home",
-        user: req.session.user
+        title: "Home"
   })
 })
 
@@ -88,23 +78,15 @@ app.post("/my-project/edit/:id", isAuthenticated, async (req, res) => updateProj
 app.post("/my-project/delete/:id", isAuthenticated, async (req, res) => deleteProject(req, res, db))
 
 app.get("/login", async (req, res) => {
-    const flash = req.session.flash
-    delete req.session.flash
-
     res.render("login", {
-    title: "Login page",
-    flash
+    title: "Login page"
     })
 })
 app.post("/login", async (req, res) => login(req, res, db))
 
 app.get("/register", async (req, res) => {
-    const flash = req.session.flash
-    delete req.session.flash
-
     res.render("register", {
     title: "Register page",
-    flash
     })
 })
 app.post("/register", async (req, res) => register(req, res, db))
