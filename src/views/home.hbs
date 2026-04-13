@@ -1,4 +1,22 @@
+{{#if success}}
+<div class="alert alert-success">
+    {{success}}
+</div>
+{{/if}}
 
+{{#if error}}
+<div class="alert alert-danger">
+    {{error}}
+</div>
+{{/if}}
+
+<div class="login">
+  {{#if user}}
+    <p>Welcome, {{user.name}}</p>
+  {{else}}
+    <p>You are not logged in</p>
+  {{/if}}
+</div>
     <div class="mainContainer">
         <div class="h2Container">
             <h2>Welcome to my personal web</h2>

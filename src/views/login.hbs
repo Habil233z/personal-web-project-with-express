@@ -1,0 +1,24 @@
+{{#if success}}
+<div class="alert alert-success">
+    {{success}}
+</div>
+{{/if}}
+
+{{#if error}}
+<div class="alert alert-danger">
+    {{error}}
+</div>
+{{/if}}
+
+<div class="mainContainer">
+    <H1>Login Page</H1>
+    <form action="/login" method="post">
+        <h2>Email</h2>
+        <input type="text" name="email" id="userEmail">
+        <h2>password</h2>
+        <input type="text" name="password" id="userPassword">
+        <button type="submit">Login</button>
+    </form>
+
+    <button><a href="/register">Register</a></button>
+</div>

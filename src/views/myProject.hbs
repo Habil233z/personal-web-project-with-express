@@ -1,8 +1,15 @@
-{{#if flash}}
-<div class="alert alert-{{flash.type}}">
-    {{flash.message}}
+{{#if success}}
+<div class="alert alert-success">
+    {{success}}
 </div>
 {{/if}}
+
+{{#if error}}
+<div class="alert alert-danger">
+    {{error}}
+</div>
+{{/if}}
+
         <div class="formProjectContainer">
 
             <h1 id="myProjecth1">Add New Project</h1>
