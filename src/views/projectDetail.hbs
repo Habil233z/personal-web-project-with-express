@@ -2,7 +2,9 @@
     <div class="detailContainer">
         <div class="detail">
             <h2 class="h2Detail">{{project.name}}</h2>
-            <img class="imgDetail" src="{{{project.img}}}" alt="Not Avalable">
+            {{#if project.img}}
+            <img class="imgDetail" src="/uploads/{{project.img}}">
+            {{/if}}
             <P>{{project.description}}</P>
             <div class="detailLine"></div>
             <table>

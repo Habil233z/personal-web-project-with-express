@@ -16,15 +16,7 @@
                 <button>
                     <a href="/home">Back</a>
                 </button>
-                <div class="imgUpload">
-                    <h2 id="imgUpload">images</h2>
-                    </div>
-                <form action="/convert-image" method="post" enctype="multipart/form-data">
-                        <img src="{{{dataUri}}}" alt="Img Hasn't been added" class="previewImage">
-                        <input type="file" name="image">
-                        <button type="submit" onclick="return confirm('img has been uploaded')">Convert Image</button>
-                </form>
-                <form action="/my-project" method="post" class="addProjectForm">
+                <form action="/my-project" method="post" class="addProjectForm" enctype="multipart/form-data">
                     <h2>Project Name</h2>
                         <input type="text" id="projectName" name="name">
                     <h2>Description</h2>
@@ -36,6 +28,7 @@
                             <option value="sport">Sport</option>
                             <option value="construction">Construction</option>
                             <option value="decoration">decoration</option>
+                            <input type="file" name="image" accept="image/*">
                         </select>
                     
                     <button type="submit" id="submitButton">submit</button>
@@ -52,7 +45,9 @@
 <div id="containerArea">
     {{#each projects}}
     <div class="card" id="card">
-        <img class="card-img-top" src="{{{img}}}" alt="Not Avalable">
+        {{#if this.img}}
+        <img class="card-img-top" src="/uploads/{{this.img}}">
+        {{/if}}
         <div class="card-body">
         <h5 class="card-title">{{name}}</h5>
             <div class="introContainer">

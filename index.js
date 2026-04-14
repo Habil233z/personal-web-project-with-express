@@ -1,6 +1,5 @@
 import express from "express"
 import { engine } from "express-handlebars"
-import multer from "multer"
 import { db } from "./config/database.js"
 import session from "express-session"
 import flash from "express-flash"
@@ -8,10 +7,8 @@ import flash from "express-flash"
 import { getProjects, getProjectsById, createProject, getEditProject, updateProject, deleteProject } from "./src/assets/scripts/project.js"
 import { login, register } from "./src/assets/scripts/authentication.js"
 import { isAuthenticated } from "./middleware/auth.js"
-
-const storage = multer.memoryStorage()
-const upload = multer({ storage: storage})
-let dataUri = ""
+import upload from "./middleware/multer.js"
+import { handleUploadError } from "./middleware/uploadErrorHandler.js"
 
 const app = express()
 const port = 3000
@@ -41,6 +38,7 @@ app.use((req, res, next) => {
 app.use("/assets", express.static("./src/assets/scripts"))
 app.use("/assets", express.static("./src/assets"))
 app.use("/views", express.static("./src/views"))
+app.use(express.static("public"))
 
 app.engine("hbs", engine({
     extname: ".hbs",
@@ -70,11 +68,11 @@ app.get("/contact", (req, res) => {
     })
 })
 
-app.get("/my-project", async (req, res) => getProjects(req, res, db, dataUri))
-app.post("/my-project", isAuthenticated, async (req, res) => createProject(req, res, db, dataUri))
+app.get("/my-project", async (req, res) => getProjects(req, res, db))
+app.post("/my-project", isAuthenticated, handleUploadError(upload.single("image")), async (req, res) => createProject(req, res, db))
 app.get("/my-project/:id", async (req, res) => getProjectsById(req, res, db))
 app.get("/my-project/edit/:id", isAuthenticated, async (req, res) => getEditProject(req, res, db))
-app.post("/my-project/edit/:id", isAuthenticated, async (req, res) => updateProject(req, res, db))
+app.post("/my-project/edit/:id", isAuthenticated, handleUploadError(upload.single("image")),async (req, res) => updateProject(req, res, db))
 app.post("/my-project/delete/:id", isAuthenticated, async (req, res) => deleteProject(req, res, db))
 
 app.get("/login", async (req, res) => {
@@ -110,20 +108,6 @@ app.get('/logout', (req, res) => {
 app.listen(port, () => {
   console.log(`Example app listening on port ${port}`)
 })
-
-app.post("/convert-image", isAuthenticated, upload.single("image"), (req, res) => {
-    try {
-        const buffer = req.file.buffer
-        const base64String = buffer.toString('base64')
-        dataUri = `data:${req.file.mimetype}; base64, ${base64String}`
-        req.flash("success", "Image has been converted")
-        res.redirect("/my-project")
-
-    } catch (error) {
-        console.log("error at convert-image")
-    }
-
- })
 
 
 
